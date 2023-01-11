@@ -22,9 +22,22 @@ namespace ProjectName
                         )
                       );
       
-      // builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-      //           .AddEntityFrameworkStores<LibraryContext>()
-      //           .AddDefaultTokenProviders();
+      builder.Services.AddIdentity<LibraryUser, IdentityRole>()
+                .AddEntityFrameworkStores<LibraryContext>()
+                .AddDefaultTokenProviders();
+      
+      // to change default password requirements, update below 
+      // any changes here require an update of RegisterViewModel.cs pword validation
+      builder.Services.Configure<IdentityOptions>(options =>
+      {
+        // Default Password settings.
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireNonAlphanumeric = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequiredLength = 6;
+        options.Password.RequiredUniqueChars = 1;
+      });
 
       WebApplication app = builder.Build();
 
@@ -33,9 +46,9 @@ namespace ProjectName
       app.UseStaticFiles();
 
       app.UseRouting();
-
-      // app.UseAuthentication();
-      // app.UseAuthorization();
+      
+      app.UseAuthentication();
+      app.UseAuthorization();
 
       app.MapControllerRoute(
         name: "default",

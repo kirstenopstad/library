@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using Library.Models;
 
 namespace Library.Controllers
 {
+  [Authorize]
   public class AuthorsController : Controller
   {
     // Routes
@@ -16,6 +18,7 @@ namespace Library.Controllers
       _db = db;
     }
 
+    [AllowAnonymous]
     public ActionResult Index()
     {
       List<Author> authors = _db.Authors.ToList();
