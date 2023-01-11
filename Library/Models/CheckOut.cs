@@ -13,10 +13,11 @@ namespace Library.Models
     public int CopyId { get; set; }
     public Copy Copy { get; set; }
     public DateOnly DueDate { get; set; }
-    [Required(ErrorMessage = "Must include date checked out")]
-    [DataType(DataType.Date)]
+    // [Required(ErrorMessage = "Must include date checked out")]
+    // [DataType(DataType.Date)]
     public DateOnly CheckOutDate { get; set; }
     public bool IsOverdue { get; set; }
+    public LibraryerUser User { get; set; }
 
   }
 }
