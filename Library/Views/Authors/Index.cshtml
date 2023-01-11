@@ -10,7 +10,7 @@
   <table class="table table-striped">
     <tr>
       <th>Author Name</th>
-      <th>Manage</th>
+      <th colspan="2" class="text-center">Manage</th>
     </tr>
   @foreach (Author author in Model)
   {
@@ -22,6 +22,7 @@
           <input type="submit" value="Delete" class="btn btn-danger rounded-full">
         }
       </td>
+      <td>@Html.ActionLink("Add Book", "AddBook", new { id = author.AuthorId }, new { @class="btn btn-warning" })</td>
     </tr>
   }  
   </table>
