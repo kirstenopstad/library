@@ -21,10 +21,28 @@ namespace ProjectName
                           )
                         )
                       );
-      
-      // builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-      //           .AddEntityFrameworkStores<LibraryContext>()
-      //           .AddDefaultTokenProviders();
+
+      builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<LibraryContext>()
+                .AddDefaultTokenProviders();
+
+      builder.Services.Configure<IdentityOptions>(options =>
+      {
+        // Default Password settings.
+        // options.Password.RequireDigit = true;
+        // options.Password.RequireLowercase = true;
+        // options.Password.RequireNonAlphanumeric = true;
+        // options.Password.RequireUppercase = true;
+        // options.Password.RequiredLength = 6;
+        // options.Password.RequiredUniqueChars = 1;
+        // development password requirements
+        options.Password.RequireDigit = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequiredLength = 1;
+        options.Password.RequiredUniqueChars = 0;
+      });
 
       WebApplication app = builder.Build();
 
@@ -34,8 +52,8 @@ namespace ProjectName
 
       app.UseRouting();
 
-      // app.UseAuthentication();
-      // app.UseAuthorization();
+      app.UseAuthentication();
+      app.UseAuthorization();
 
       app.MapControllerRoute(
         name: "default",

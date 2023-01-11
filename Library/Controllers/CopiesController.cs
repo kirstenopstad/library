@@ -4,9 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using Library.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Library.Controllers
 {
+  [Authorize]
   public class CopiesController : Controller
   {
     private readonly LibraryContext _db;
@@ -23,6 +25,7 @@ namespace Library.Controllers
                                .Include(copy => copy.Book)
                                .ThenInclude(book => book.AuthorBooks)
                                .ThenInclude(authorBook => authorBook.Author)
+                               .Where(copy => copy.IsCheckedOut == false)
                                .ToList();
       return View(copyList);
     }
@@ -42,19 +45,21 @@ namespace Library.Controllers
     //   return View(thisCopy);
     // }
     // Update (Edit)
+    [HttpPost]
     public ActionResult Edit(int id)
     {
-      Copy thisCopy = _db.Copies.FirstOrDefault(copy => copy.CopyId == id);
-      if(thisCopy.IsCheckedOut) //true
-      {
-        thisCopy.IsCheckedOut = false;
-      }
-      else
-      {
-        thisCopy.IsCheckedOut = true;
-      }
-      _db.SaveChanges();
-      return RedirectToAction("Index");
+      // Copy thisCopy = _db.Copies.FirstOrDefault(copy => copy.CopyId == id);
+      // if(thisCopy.IsCheckedOut) //true
+      // {
+      //   thisCopy.IsCheckedOut = false;
+      // }
+      // else
+      // {
+      //   thisCopy.IsCheckedOut = true;
+      // }
+      // _db.SaveChanges();
+      return RedirectToAction("CheckOutCopy", "CheckOuts", new {copyId = id});
+      //return RedirectToAction("Index");
     }
     [HttpPost]
     public ActionResult Delete(int id)

@@ -1,0 +1,14 @@
+@{
+  Layout = "_Layout";
+}
+@using Library.Models
+<h1>Checkout Title</h1>
+
+@using (Html.BeginForm())
+{
+  @Html.Label("Title")
+  @Html.DropDownList("CopyId")
+  
+  @* TODO: add date input *@
+  <input type="submit" value="checkout">
+}

@@ -9,18 +9,26 @@
   <table class="table table-striped">
     <tr>
       <th>Book Title</th>
-      <th>Manage</th>
+      @if (User.Identity.IsAuthenticated)
+      {
+        <th>Manage</th>
+
+      }
     </tr>
     @foreach (Book book in Model)
     {
       <tr>
         <td>@Html.ActionLink($"{book.Title}", "Details", new { id = book.BookId })</td>
-        <td>
-          @using (Html.BeginForm("Delete", "Books", routeValues : new { id = book.BookId }))
-          {
-            <input type="submit" value="Delete" class="btn btn-warning">
-          }
-        </td>
+        @if (User.Identity.IsAuthenticated)
+        {
+          <td>
+            @using (Html.BeginForm("Delete", "Books", routeValues: new { id = book.BookId }))
+            {
+              <input type="submit" value="Delete" class="btn btn-warning">
+            }
+          </td>
+
+        }
       </tr>
     }
   </table>
@@ -29,4 +37,8 @@ else
 {
   <h4>There are no books added.</h4>
 }
-<p>@Html.ActionLink("Add Book", "Create")</p>
+@if (User.Identity.IsAuthenticated)
+{
+  <p>@Html.ActionLink("Add Book", "Create")</p>
+
+}

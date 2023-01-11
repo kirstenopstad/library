@@ -8,43 +8,51 @@
 <h3>Title: @Model.Title</h3>
 <h3>Copies Available: @ViewBag.CopyCount</h3>
 
-@if (Model.AuthorBooks.Count !=0 )
+@if (Model.AuthorBooks.Count != 0)
 {
   <table class="table table-striped">
     <tr>
       <th>Author Name</th>
-      <th>Manage</th>
+      @if (User.Identity.IsAuthenticated)
+      {
+        <th>Manage</th>
+
+      }
     </tr>
-  @foreach (AuthorBook entry in Model.AuthorBooks)
-  {
-    <tr>
-      <td>@Html.ActionLink($"{entry.Author.Name}", "Details", "Authors", new { id = entry.AuthorId})</td>
-      <td>
-        @using (Html.BeginForm("RemoveBook", "Authors", routeValues : new { joinId = entry.AuthorBookId, type = 1}))
-        {
-          <input type="submit" value="Remove" class="btn btn-secondary">
-        }
-      </td>
-    </tr>
-  }
+    @foreach (AuthorBook entry in Model.AuthorBooks)
+    {
+      <tr>
+        <td>@Html.ActionLink($"{entry.Author.Name}", "Details", "Authors", new { id = entry.AuthorId})</td>
+        <td>
+          @using (Html.BeginForm("RemoveBook", "Authors", routeValues: new { joinId = entry.AuthorBookId, type = 1 }))
+          {
+            <input type="submit" value="Remove" class="btn btn-secondary">
+          }
+        </td>
+      </tr>
+    }
   </table>
 }
 else
 {
   <h4>There are no authors assoicated with this book.</h4>
 }
-@using (Html.BeginForm("AddAuthor", "Books"))
+@if (User.Identity.IsAuthenticated)
 {
-  @Html.HiddenFor(book => book.BookId)
+  @using (Html.BeginForm("AddAuthor", "Books"))
+  {
+    @Html.HiddenFor(book => book.BookId)
 
-  @Html.Label("Author")
-  @Html.DropDownList("AuthorId")
-  <input type="submit" value="Add">
+    @Html.Label("Author")
+    @Html.DropDownList("AuthorId")
+    <input type="submit" value="Add">
+  }
+  @using (Html.BeginForm("Create", "Copies"))
+  {
+    @Html.HiddenFor(book => book.BookId)
+    //input for int represents quantity
+    <input type="submit" value="Add Copy">
+  }
+  <p>@Html.ActionLink("Edit Book", "Edit", new { id = @Model.BookId })</p>
+
 }
-@using (Html.BeginForm("Create", "Copies"))
-{
-  @Html.HiddenFor(book => book.BookId)
-  //input for int represents quantity
-  <input type="submit" value="Add Copy">
-}
-<p>@Html.ActionLink("Edit Book", "Edit", new { id = @Model.BookId })</p>

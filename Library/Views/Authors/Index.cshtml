@@ -10,21 +10,29 @@
   <table class="table table-striped">
     <tr>
       <th>Author Name</th>
-      <th colspan="2" class="text-center">Manage</th>
+      @if (User.Identity.IsAuthenticated)
+      {
+        <th colspan="2" class="text-center">Manage</th>
+
+      }
     </tr>
-  @foreach (Author author in Model)
-  {
-    <tr>
-      <td>@Html.ActionLink($"{author.Name}", "Details", new { id = author.AuthorId })</td>
-      <td>
-        @using (Html.BeginForm("Delete", "Authors", routeValues : new { id = author.AuthorId}))
+    @foreach (Author author in Model)
+    {
+      <tr>
+        <td>@Html.ActionLink($"{author.Name}", "Details", new { id = author.AuthorId })</td>
+        @if (User.Identity.IsAuthenticated)
         {
-          <input type="submit" value="Delete" class="btn btn-danger rounded-full">
+          <td>
+            @using (Html.BeginForm("Delete", "Authors", routeValues: new { id = author.AuthorId }))
+            {
+              <input type="submit" value="Delete" class="btn btn-danger rounded-full">
+            }
+          </td>
+          <td>@Html.ActionLink("Add Book", "AddBook", new { id = author.AuthorId }, new { @class="btn btn-warning" })</td>
+
         }
-      </td>
-      <td>@Html.ActionLink("Add Book", "AddBook", new { id = author.AuthorId }, new { @class="btn btn-warning" })</td>
-    </tr>
-  }  
+      </tr>
+    }
   </table>
 }
 <p>@Html.ActionLink("Add Author", "Create")</p>

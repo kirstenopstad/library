@@ -4,9 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using Library.Models;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace Library.Controllers
 {
+  [Authorize]
   public class AuthorsController : Controller
   {
     // Routes
@@ -15,7 +18,7 @@ namespace Library.Controllers
     {
       _db = db;
     }
-
+    [AllowAnonymous]
     public ActionResult Index()
     {
       List<Author> authors = _db.Authors.ToList();
@@ -42,7 +45,7 @@ namespace Library.Controllers
       }
 
     }
-
+    [AllowAnonymous]
     public ActionResult Details(int id)
     {
       ViewBag.BookId = new SelectList(_db.Books, "BookId", "Title");

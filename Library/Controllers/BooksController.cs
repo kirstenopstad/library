@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Library.Models
 {
+  [Authorize]
   public class BooksController : Controller
   {
     private readonly LibraryContext _db;
@@ -13,7 +15,7 @@ namespace Library.Models
     {
       _db = db;
     }
-
+    [AllowAnonymous]
     public ActionResult Index()
     {
       return View(_db.Books.ToList());
@@ -38,7 +40,7 @@ namespace Library.Models
         return RedirectToAction("Index");
       }
     }
-    
+    [AllowAnonymous]
     public ActionResult Details(int id)
     {
       //ViewBag.CopyCount = 0;
