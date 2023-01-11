@@ -1,0 +1,54 @@
+@{
+  Layout = "_Layout";
+}
+@using Library.Models
+<h1>Copies</h1>
+
+@if (Model.Count != 0)
+{
+  <table class="table table-striped">
+    <tr>
+      <th>Copy Id</th>
+      <th>Book Title</th>
+      <th>Author</th>
+      <th>Checkout</th>
+      <th>Manage</th>
+    </tr>
+    @foreach (Copy entry in Model)
+    {
+      <tr>
+        <td>@entry.CopyId</td>
+        <td>@Html.ActionLink($"{entry.Book.Title}", "Details", "Books", new { id = entry.BookId })</td>
+        <td>
+          @foreach (AuthorBook authorBook in entry.Book.AuthorBooks)
+          {
+            <p>@Html.ActionLink($"{authorBook.Author.Name}", "Details", "Authors", new { id = authorBook.AuthorId })</p>
+          }
+        </td>
+        <td>
+          @using (Html.BeginForm("Edit", "Copies", routeValues: new { id = entry.CopyId}))
+          {
+            @if(entry.IsCheckedOut) //true
+            {
+              <input type="submit" value="Return">
+            }
+            else //false
+            {
+              <input type="submit" value="Checkout">
+            }
+          }
+        </td>
+        <td>
+          @using (Html.BeginForm("Delete", "Copies", routeValues : new { id = entry.CopyId }))
+          {
+            <input type="submit" value="Delete" class="btn btn-warning">
+          }
+        </td>
+      </tr>
+    }
+  </table>
+}
+else
+{
+  <p>There are currently no copies of this title.</p>
+}

@@ -1,0 +1,15 @@
+@{
+  Layout = "_Layout";
+}
+@model Library.Models.Author
+
+<h1>Add Book to Author</h1>
+
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model => model.AuthorId)
+
+  @Html.Label("Book")
+  @Html.DropDownList("BookId")
+  <input type="submit" value="Add">
+}

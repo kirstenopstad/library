@@ -1,11 +1,44 @@
 @{
   Layout = "_Layout";
 }
-
+@using Library.Models
+@model Library.Models.Author
 <h1>Author Details</h1>
 
-<p>@Model.Name</p>
+<h3>@Model.Name</h3>
 
 <!-- TODO: add books by author -->
+@if (@Model.AuthorBooks.Count != 0)
+{
+  <table class="table table-striped">
+    <tr>  
+      <th>Book Title</th>
+      <th>Manage</th>
+    </tr>
+    @foreach (AuthorBook entry in Model.AuthorBooks)
+    {
+      <tr>
+        <td>@Html.ActionLink($"{entry.Book.Title}", "Details", "Books", new { id = entry.BookId})</td>
+        <td>
+          @using (Html.BeginForm("RemoveBook", "Authors", routeValues : new { joinId = entry.AuthorBookId, type = 0 }))
+          {
+            <input type="submit" value="Remove Book">
+          }
+        </td>
+      </tr>
+    }
+  </table>
+}
+else
+{
+  <h4>There are no books added to this author.</h4>
+}
+  @using (Html.BeginForm("AddBook", "Authors"))
+  {
+    @Html.HiddenFor(model => model.AuthorId)
 
+    @Html.Label("Book");
+    @Html.DropDownList("BookId");
+    <input type="submit" value="Add">
+  }
 <p>@Html.ActionLink("Edit Author", "Edit", new { id = @Model.AuthorId })</p>

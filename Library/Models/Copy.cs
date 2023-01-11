@@ -10,6 +10,7 @@ namespace Library.Models
     public int CopyId {get;set;}
     public int BookId {get;set;}
     public Book Book {get;set;}
+    // TODO: set default to false
     public bool IsCheckedOut {get;set;}
   }
 }
